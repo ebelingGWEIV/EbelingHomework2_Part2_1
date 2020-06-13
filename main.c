@@ -14,7 +14,7 @@ int testPalindrome(const char *);
 void GetUserInput(char *);
 
 int main(void) {
-    char myString[50];
+    char myString[200]; //Not initializing the string with allocated memory is causing runtime error,
 
     GetUserInput(myString);
 
