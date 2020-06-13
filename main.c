@@ -6,17 +6,19 @@
  *  ----------------------------------------------------------
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
 int Palindrome(const char *, int, int);
 int testPalindrome(const char *);
-void GetUserInput(char *);
+void GetUserInput(char *, int );
 
 int main(void) {
-    char myString[200]; //Not initializing the string with allocated memory is causing runtime error,
+    int stringSize = 10;
+    char myString[stringSize];
 
-    GetUserInput(myString);
+    GetUserInput(myString, stringSize);
 
     int result = testPalindrome(myString);
 
@@ -29,11 +31,21 @@ int main(void) {
  * Ask the user for input from the console.
  * @param myString The character array to save the string into
  */
-void GetUserInput(char *myString) {
+void GetUserInput(char *myString, int size) {
     puts("Enter a string to be tested as a palindrome:\n");
     fflush(stdout); //needed for puts to be displayed during debug
-
-    scanf("%s",myString); //save input into myString
+    char ch;
+    size_t len;
+    for(len = 0; EOF != getc(stdin) && ch != '\n'; len++)
+    {
+        myString[len] = ch;
+        if(len == size) {
+            myString = realloc(myString, sizeof(char) * (size += 16));
+            if (!myString) return;
+        }
+    }
+    myString[len++] = '\0';
+    realloc(myString, sizeof(char)*len);
 }
 
 /**
