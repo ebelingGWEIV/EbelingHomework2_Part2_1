@@ -10,42 +10,47 @@
 #include <string.h>
 #include <ctype.h>
 
+#define STRINGSIZE 10
+
 int Palindrome(const char *, int, int);
 int testPalindrome(const char *);
-void GetUserInput(char *, int );
+char *GetUserInput();
 
 int main(void) {
-    int stringSize = 10;
-    char myString[stringSize];
-
-    GetUserInput(myString, stringSize);
+    char *myString;
+    myString = GetUserInput();
 
     int result = testPalindrome(myString);
 
-    printf("\"%s\" is%s a palindrome\n", &myString, (result ? "" : " not"));
+    printf("\"%s\" is%s a palindrome\n", myString, (result ? "" : " not"));
 
     return 0;
 }
 
 /**
- * Ask the user for input from the console.
- * @param myString The character array to save the string into
+ * Reads the user input and returns a string.
+ * @return A character pointer to the string.
  */
-void GetUserInput(char *myString, int size) {
-    puts("Enter a string to be tested as a palindrome:\n");
-    fflush(stdout); //needed for puts to be displayed during debug
-    char ch;
+char *GetUserInput(){
+
+    size_t size = STRINGSIZE;
+    char *str;
+    int ch;
     size_t len;
-    for(len = 0; EOF != getc(stdin) && ch != '\n'; len++)
-    {
-        myString[len] = ch;
-        if(len == size) {
-            myString = realloc(myString, sizeof(char) * (size += 16));
-            if (!myString) return;
+
+    str = realloc(NULL, sizeof(char)*size);//size is start size
+
+    for(len = 0; (EOF!=(ch=getc(stdin)) && ch != '\n'); len++){
+        str[len]=ch;
+
+        if(len==size-1)
+        {
+            str = realloc(str, sizeof(char)*(size+=16));
+            if(!str)return str;
         }
     }
-    myString[len++] = '\0';
-    realloc(myString, sizeof(char)*len);
+    str[len++]='\0';
+    return realloc(str, sizeof(char)*len);
 }
 
 /**

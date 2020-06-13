@@ -9,6 +9,8 @@
 C:/Users/George/CLionProjects/CIS 241/EbelingHomework2_Part2-1/main.c
 stdio.h
 -
+stdlib.h
+-
 string.h
 -
 ctype.h
